@@ -7,13 +7,14 @@ const fs = require('fs')
 const { sendDailyMail } = require('../utils/mail');
 const logger = require("../utils/log");
 const { decrypt } = require("../utils/encrypt");
-const {env} = require("../utils/env");
+const { env } = require("../utils/env");
 const { EOL } = require('os');
 const program = new Command();
 // program
 //     .name('Alvin-Util')
 //     .description('CLI to do some daily job for Alvin')
 //     .version('0.0.1');
+
 const current = dayjs().format('YYYY-MM-DD')
 program.description('send a daily report').version('0.0.1')
     .option('-d, --date <date>', 'send date', current)

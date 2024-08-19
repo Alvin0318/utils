@@ -1,10 +1,9 @@
-const dotenv = require("dotenv");
 const path = require("path");
-const env = dotenv.config(path.resolve(__dirname,"../",".env")).parsed
+const env = require("dotenv").config({path: path.resolve(__dirname,"../",".env")});
 const loadEnv = function(path){
-    return dotenv.config(path).parsed
+    return dotenv.config({path})
 }
 module.exports = {
-    env,
+    env: env.parsed,
     loadEnv
 };

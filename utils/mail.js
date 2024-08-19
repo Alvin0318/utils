@@ -1,13 +1,12 @@
-const {env : _env} = require('./env');
+const { env: _env } = require('./env');
 const nodemailer = require('nodemailer');
 const iconv = require('iconv-lite');
 const dayjs = require('dayjs');
 const logger = require("./log")
 const moment = require("moment-timezone");
-const {decrypt} = require("../utils/encrypt")
+const { decrypt } = require("../utils/encrypt")
 
 // const base64Attachments = require('mailie-base64-attachments');
-
 function parseEnvs(obj) {
     return {
         ...obj,
@@ -93,7 +92,7 @@ function sendDailyMail(date = current, type = 'plan', content = '') {
                 if (error) {
                     return console.log(logger.error(error));
                 }
-                console.log(logger.info('Message sent: '+ info.messageId));
+                console.log(logger.info('Message sent: ' + info.messageId));
             });
         }
     }
