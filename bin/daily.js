@@ -5,6 +5,9 @@ const { Command } = require('commander');
 const { default: inquirer } = require('inquirer');
 const fs = require('fs')
 const { sendDailyMail } = require('../utils/mail');
+const logger = require("../utils/log");
+const { decrypt } = require("../utils/encrypt");
+const {env} = require("../utils/env");
 const { EOL } = require('os');
 const program = new Command();
 // program
@@ -18,18 +21,33 @@ program.description('send a daily report').version('0.0.1')
         const c = await inputContent();
         const d = dayjs(date).format('YYYY-MM-DD');
         const fileName = `${c.type === 'plan' ? '工作计划' : '工作总结'}${d}.log`
-        const daylog = path.resolve(__dirname,'../','daylog', fileName)
-        fs.appendFileSync(daylog,c.content);
+        const daylog = path.resolve(__dirname, '../', 'daylog', fileName)
+        fs.appendFileSync(daylog, c.content);
         if (c.confirm) {
             sendDailyMail(d, c.type, c.content)
         } else {
-            console.error("取消发送：", EOL, c.content)
+            console.log(logger.warn("取消发送：" + EOL + c.content))
         }
 
     })
 
 const inputContent = async () => {
+    const d = dayjs();
+    const last = `${String(d.$H).padStart(2, 0)}:${String(Math.floor(d.$m / 15) * 15).padStart(2, 0)}`
     const promptList = [
+        {
+            type: 'password',
+            name: 'password',
+            message: '请输入密码：',
+            mask: '*', // 输入时显示的掩码字符  
+            validate: function (val) {
+                if (val === decrypt(env.AUTH_PASSWORD)) {
+                    return true;
+                }
+                console.log(logger.error("\n密码错误"))
+                process.exit(1)
+            }
+        },
         {
             type: "list",
             message: "请选择日志类型:",
@@ -57,7 +75,7 @@ const inputContent = async () => {
             type: "editor",
             message: "请输入工作总结内容:",
             name: "content",
-            default: '\n[勤奋时间][17:45][]\n',
+            default: `\n[勤奋时间][17:45][${last}]\n`,
             when: function (answers) {
                 return answers.type === 'report'
             },

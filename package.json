@@ -8,15 +8,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "daily": "bin/daily.js"
+    "mydaily": "bin/daily.js",
+    "myfrp": "bin/frp.js",
+    "myencrypt": "bin/encrypt.js"
   },
   "keywords": [
+    "utils",
     "mail",
     "gbk"
   ],
   "author": "Alvin",
   "license": "MIT",
   "dependencies": {
+    "chalk": "4",
     "commander": "^12.1.0",
     "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",

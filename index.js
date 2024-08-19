@@ -16,11 +16,11 @@ program.command('daily').description('send a daily report')
     .action(async ({ date }) => {
         const c = await inputContent();
         const d = dayjs(date).format('YYYY-MM-DD');
-        fs.appendFileSync(`daylog/${c.type === 'plan' ? '工作计划' : '工作总结'}${d}.log`,c.content);
+        fs.appendFileSync(`daylog/${c.type === 'plan' ? '工作计划' : '工作总结'}${d}.log`, c.content);
         if (c.confirm) {
             sendDailyMail(d, c.type, c.content)
         } else {
-            console.error("取消发送：", EOL, c.content)
+            console.log(logger.warn("取消发送：" + EOL + c.content))
         }
 
     })
