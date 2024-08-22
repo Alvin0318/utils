@@ -1,0 +1,34 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "my daily life utils",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js daily",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "mydaily": "bin/daily.js",
+    "myfrp": "bin/frp.js",
+    "myencrypt": "bin/encrypt.js"
+  },
+  "keywords": [
+    "utils",
+    "mail",
+    "gbk"
+  ],
+  "author": "Alvin",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "4",
+    "commander": "^12.1.0",
+    "cross-spawn": "^7.0.3",
+    "dayjs": "^1.11.12",
+    "dgram": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "iconv-lite": "^0.6.3",
+    "inquirer": "^10.1.8",
+    "moment-timezone": "^0.5.45",
+    "nodemailer": "^6.9.14"
+  }
+}
