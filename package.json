@@ -22,7 +22,9 @@
   "dependencies": {
     "chalk": "4",
     "commander": "^12.1.0",
+    "cross-spawn": "^7.0.3",
     "dayjs": "^1.11.12",
+    "dgram": "^1.0.1",
     "dotenv": "^16.4.5",
     "iconv-lite": "^0.6.3",
     "inquirer": "^10.1.8",
