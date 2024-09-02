@@ -19,21 +19,25 @@ const current = dayjs().format('YYYY-MM-DD')
 program.description('send a daily report').version('0.0.1')
     .option('-d, --date <date>', 'send date', current)
     .action(async ({ date }) => {
-        const c = await inputContent();
-        const d = dayjs(date).format('YYYY-MM-DD');
-        // const fileName = `${c.type === 'plan' ? '工作计划' : '工作总结'}${d}.log`
-        const type = c.type === 'plan' ? '工作计划' : '工作总结'
-        // const daylog = path.resolve(__dirname, '../', 'daylog', fileName)
-        const ctx = "======" + d + "======" + type + "======" + EOL + c.content + EOL;
-        const logpath = path.resolve(__dirname,"../", "daylog", "工作日志.log")
-        fs.appendFileSync(logpath, ctx)
-        // fs.appendFileSync(daylog, c.content);
-        if (c.confirm) {
-            sendDailyMail(d, c.type, c.content)
-        } else {
-            console.log(logger.warn("取消发送：" + EOL + c.content))
+        try {
+            const c = await inputContent();
+            const d = dayjs(date).format('YYYY-MM-DD');
+            // const fileName = `${c.type === 'plan' ? '工作计划' : '工作总结'}${d}.log`
+            const type = c.type === 'plan' ? '工作计划' : '工作总结'
+            // const daylog = path.resolve(__dirname, '../', 'daylog', fileName)
+            const ctx = "======" + d + "======" + type + "======" + EOL + c.content + EOL;
+            const logpath = path.resolve(__dirname, "../", "daylog", "工作日志.log")
+            fs.appendFileSync(logpath, ctx)
+            // fs.appendFileSync(daylog, c.content);
+            if (c.confirm) {
+                sendDailyMail(d, c.type, c.content)
+            } else {
+                console.log(logger.warn("取消发送：" + EOL + c.content))
+            }
+        } catch (error) {
+            console.log(logger.error(error.message))
+            return;
         }
-
     })
 
 const inputContent = async () => {
