@@ -10,7 +10,8 @@
   "bin": {
     "mydaily": "bin/daily.js",
     "myfrp": "bin/frp.js",
-    "myencrypt": "bin/encrypt.js"
+    "myencrypt": "bin/encrypt.js",
+    "mynote": "bin/note.js"
   },
   "keywords": [
     "utils",

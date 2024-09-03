@@ -131,4 +131,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-daylong
+daylog
+note/*.md
+.npmrc
