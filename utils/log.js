@@ -1,25 +1,17 @@
 const chalk = require("chalk");
 
-function warn(str) {
-    return chalk.yellowBright.bold(str)
+const type_color = {
+    warn: 'yellowBright',
+    info: 'green',
+    error: 'redBright',
+    log: 'gray',
+    debug: 'bgYellowBright'
 }
-function info(str) {
-    return chalk.green.bold(str)
+const logger = {}
+for (let i in type_color) {
+    logger[i] = (...args) => {
+        let str = args.join(' ');
+        return chalk[type_color[i]].bold(str)
+    }
 }
-function error(str) {
-    return chalk.redBright.bold(str)
-}
-function log(str) {
-    return chalk.gray.bold(str)
-}
-function debug(str) {
-    return chalk.bgYellowBright.bold(str)
-}
-
-module.exports = {
-    log,
-    info,
-    warn,
-    error,
-    debug
-}
+module.exports = logger

@@ -17,12 +17,45 @@ program
     .option('-d, --delete', '快速删除记录')
     .option('-c,--createNew [文件名称]', '创建新的记录文件')
     .option('-o,--open <文件名称>', '打开指定文件')
+    .option('-l,--list', '查看笔记')
+    .option('-ll,--listDetail', '查看笔记')
     // .option('-s,--show', '全局查看')
     .action(async (data) => {
         const filePath = path.resolve(__dirname, '../note', 'note.md');
         const date = `**[${dayjs().format('YYYY-MM-DD HH:mm:ss')}]**${EOL}`;
-        const { edit, add, delete: _delete, todo, createNew, open } = data;
-        if (_delete) {
+        const { edit, add, delete: _delete, todo, createNew, open, list, listDetail } = data;
+        if (list || listDetail) {
+            const directoryPath = path.resolve(__dirname, '../note');
+            fs.readdir(directoryPath, (err, files) => {
+                if (err) {
+                    console.error(`无法读取目录: ${err}`);
+                    return;
+                }
+                console.log(logger.warn('文件总数:', files.length))
+                console.log('------------------------');
+                // 遍历每个文件
+                files.forEach(file => {
+                    const filePath = path.join(directoryPath, file);
+                    // 获取文件统计信息
+                    fs.stat(filePath, (err, stats) => {
+                        if (err) {
+                            console.error(`无法获取文件信息: ${err}`);
+                            return;
+                        }
+                        if (listDetail) {
+                            // 输出文件信息
+                            console.log(`文件名: ${logger.info(file)}`);
+                            console.log(`大小: ${logger.error((stats.size / 1024).toFixed(2) + ' ' + 'MB')}`);
+                            console.log(`创建时间: ${logger.log(dayjs(stats.birthtime).format('YYYY-MM-DD HH:mm:ss'))}`);
+                            console.log(`最后修改时间: ${logger.warn(dayjs(stats.mtime).format('YYYY-MM-DD HH:mm:ss'))}`);
+                            console.log('------------------------');
+                        } else {
+                            console.log(`${logger.info(file)}  ${logger.error((stats.size / 1024).toFixed(2), 'MB')}`);
+                        }
+                    });
+                });
+            });
+        } else if (_delete) {
             if (fs.existsSync(filePath)) {
                 try {
                     fs.rename(filePath, filePath.replace('note.md', `note[${dayjs().format('YYYY-MM-DD')}].bak.md`), err => {
@@ -39,16 +72,15 @@ program
                 console.log(logger.warn('文件不存在'))
             }
         } else if (open) {
-            const fileList = fs.readdirSync(path.resolve(__dirname, '../note'))
-                .filter(file => file.endsWith('.md'));
-            
-                const fileName = fileList.find(file => file.includes(open));
-                if (!fileName) {
-                    console.log(logger.warn(`文件不存在,可使用 '-c ${open}' 创建新文件`))
-                }else{
-                    openFileWithDefaultEditor(path.resolve(__dirname, '../note', fileName))
-                }
-                
+            const fileList = fs.readdirSync(path.resolve(__dirname, '../note'));
+            const reg = new RegExp(`${open}.*\\.md`, 'gi')
+            const fileName = fileList.find(file => reg.test(file));
+            if (!fileName) {
+                console.log(logger.warn(`文件不存在,可使用 '-c ${open}' 创建新文件`))
+            } else {
+                openFileWithDefaultEditor(path.resolve(__dirname, '../note', fileName))
+            }
+
         } else if (edit) {
             // const promptList = [{
             //     type: "editor",

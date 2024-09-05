@@ -9,7 +9,18 @@ utils for my dailylife
 - start
 - stop
 - status
+
+
 ## myencrypt
 > 命令包中的默认对称加解密
 - encrypt
 - decrypt
+
+## mynote
+> 本地笔记管理
+- -a
+- -e
+- -d
+- -l, -ll
+- -c
+- -o
