@@ -12,8 +12,8 @@ const program = new Command();
 
 program
     .option('-e, --edit', '启用编辑模式')
-    .option('-a, --add [快速添加记录]', '快速添加记录')
-    .option('-td, --todo [快速添加待办]', '快速添加待办')
+    .option('-a, --add <快速添加记录>', '快速添加记录')
+    .option('-td, --todo <快速添加待办>', '快速添加待办')
     .option('-d, --delete', '快速删除记录')
     .option('-c,--createNew [文件名称]', '创建新的记录文件')
     .option('-o,--open <文件名称>', '打开指定文件')
@@ -45,12 +45,12 @@ program
                         if (listDetail) {
                             // 输出文件信息
                             console.log(`文件名: ${logger.info(file)}`);
-                            console.log(`大小: ${logger.error((stats.size / 1024).toFixed(2) + ' ' + 'MB')}`);
+                            console.log(`大小: ${logger.error((stats.size / 1024).toFixed(2) + ' ' + 'kb')}`);
                             console.log(`创建时间: ${logger.log(dayjs(stats.birthtime).format('YYYY-MM-DD HH:mm:ss'))}`);
                             console.log(`最后修改时间: ${logger.warn(dayjs(stats.mtime).format('YYYY-MM-DD HH:mm:ss'))}`);
                             console.log('------------------------');
                         } else {
-                            console.log(`${logger.info(file)}  ${logger.error((stats.size / 1024).toFixed(2), 'MB')}`);
+                            console.log(`${logger.info(file)}  ${logger.error((stats.size / 1024).toFixed(2), 'kb')}`);
                         }
                     });
                 });
