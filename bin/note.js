@@ -122,7 +122,7 @@ function openFileWithDefaultEditor(filePath) {
     if (!fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, '', { encoding: 'utf-8' });
     }
-    const command = process.platform === 'win32' ? 'Typora' : 'open';
+    const command = process.platform === 'win32' ? 'Typora' : process.platform === 'linux' ? 'vim' : 'open';
     const cs = crossspawn(command, [filePath], { stdio: 'inherit' });
     cs.addListener('error', error => console.log(logger.error(error.message)))
 }
